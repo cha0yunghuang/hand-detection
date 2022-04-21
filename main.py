@@ -54,10 +54,10 @@ while True:
                     # put id string next to the landmark
                     cv2.putText(frame, str(id), (xPosition-30,yPosition+5), cv2.FONT_ITALIC, 0.3, (255,255,255), 1)
 
-                    # highlight the landmark circle
+                    # highlight the landmark circle 
                     if id == 4:
                         cv2.circle(frame, (xPosition, yPosition), 5, (0, 255, 0), cv2.FILLED)
-    
+                    
         # FPS
         cTime = time.time()
         fps = 1 / (cTime - pTime)
