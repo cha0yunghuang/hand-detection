@@ -8,7 +8,7 @@ cap = cv2.VideoCapture(0)
 # hand detection model by mediapipe
 mpHands = mp.solutions.hands
 # method details
-hands = mpHands.Hands()
+hands = mpHands.Hands(max_num_hands=1)
 
 # draw hand landmarks, and its style settings
 mpDraw = mp.solutions.drawing_utils
@@ -46,13 +46,17 @@ while True:
                 mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS, handLmsStyle, handConStyle)
                 
                 # draw landmark id
-                for i, lm in enumerate(handLms.landmark):
+                for id, lm in enumerate(handLms.landmark):
                     # landmark position coordinate setting
                     xPosition = np.int(lm.x * imgWidth)
                     yPosition = np.int(lm.y * imgHeight)
-                    print(i, xPosition, yPosition)
+                    print(id, xPosition, yPosition)
                     # put id string next to the landmark
-                    cv2.putText(frame, str(i), (xPosition-30,yPosition+5), cv2.FONT_ITALIC, 0.3, (255,255,255), 1)
+                    cv2.putText(frame, str(id), (xPosition-30,yPosition+5), cv2.FONT_ITALIC, 0.3, (255,255,255), 1)
+
+                    # highlight the landmark circle
+                    if id == 4:
+                        cv2.circle(frame, (xPosition, yPosition), 5, (0, 255, 0), cv2.FILLED)
     
         # FPS
         cTime = time.time()
