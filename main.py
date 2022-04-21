@@ -1,6 +1,7 @@
 import cv2
 import mediapipe as mp
 import time
+import math
 import numpy as np
 
 
@@ -41,23 +42,33 @@ while True:
         # if landmarks coordinate detected
         if result.multi_hand_landmarks:
             
+
+
             # draw landmark
             for handLms in result.multi_hand_landmarks:
                 mpDraw.draw_landmarks(frame, handLms, mpHands.HAND_CONNECTIONS, handLmsStyle, handConStyle)
-                
+                location = []
+
                 # draw landmark id
                 for id, lm in enumerate(handLms.landmark):
                     # landmark position coordinate setting
                     xPosition = np.int(lm.x * imgWidth)
                     yPosition = np.int(lm.y * imgHeight)
-                    print(id, xPosition, yPosition)
+                    #print(id, xPosition, yPosition)
                     # put id string next to the landmark
                     cv2.putText(frame, str(id), (xPosition-30,yPosition+5), cv2.FONT_ITALIC, 0.3, (255,255,255), 1)
 
                     # highlight the landmark circle 
                     if id == 4:
                         cv2.circle(frame, (xPosition, yPosition), 5, (0, 255, 0), cv2.FILLED)
-                    
+
+                    # coordinate of each id in a list
+                    coor = []
+                    coor.append(xPosition)
+                    coor.append(yPosition)
+                    location.append(coor)
+                print(location)
+
         # FPS
         cTime = time.time()
         fps = 1 / (cTime - pTime)
